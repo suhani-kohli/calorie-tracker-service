@@ -16,21 +16,6 @@ import (
 
 func main() {
 	router := mux.NewRouter()
-	// host := "localhost"
-	// port := 5432
-	// user := "suhani1"
-	// password := "password"
-	// dbname := "gotest"
-
-	// psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-	// 	"password=%s dbname=%s sslmode=disable",
-	// 	host, port, user, password, dbname)
-	// fmt.Println(psqlInfo)
-	// db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
-
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost"))
 	if err != nil {
@@ -52,7 +37,9 @@ func main() {
 	fmt.Printf(" %T", collection)
 	fmt.Printf(" %T", ctx)
 
-	router.HandleFunc("/item", api.CreateItem(collection)).Methods(http.MethodPost)
+	router.HandleFunc("/foodlogs", api.CreateFoodLog(collection)).Methods(http.MethodPost)
+	router.HandleFunc("/foodlogs", api.GetFoodLogs(collection)).Methods(http.MethodGet)
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 
 }
