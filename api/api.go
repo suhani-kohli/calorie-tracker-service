@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -10,16 +11,22 @@ import (
 )
 
 type FoodDiary struct {
-	MealName string `json:"_mealName,omitempty" bson:"_mealName,omitempty"`
-	FoodItem string `json:"_foodItem,omitempty" bson:"_foodItem,omitempty"`
-	Date     string `json:"_date,omitempty" bson:"_date,omitempty"`
+	MealName string `json:"mealName,omitempty" bson:"mealName,omitempty"`
+	FoodItem string `json:"foodItem,omitempty" bson:"foodItem,omitempty"`
+	Date     string `json:"date,omitempty" bson:"date,omitempty"`
 }
 
 func CreateItem(collection *mongo.Collection) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		reqBody, _ := ioutil.ReadAll(r.Body)
+		fmt.Println("body", reqBody)
 		var foodDiary FoodDiary
-		json.Unmarshal(reqBody, &foodDiary)
+		err := json.Unmarshal(reqBody, &foodDiary)
+		if err != nil {
+			fmt.Printf("There was an error decoding the json. err = %s", err)
+			return
+		}
+		fmt.Println("food diary", foodDiary)
 
 		result, err := collection.InsertOne(context.TODO(), foodDiary)
 
@@ -27,6 +34,7 @@ func CreateItem(collection *mongo.Collection) http.HandlerFunc {
 
 			return
 		}
+		fmt.Println(result)
 
 		json.NewEncoder(w).Encode(result)
 	}

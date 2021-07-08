@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-
+	api "github.com/suhani-kohli/calorie-tracker-service/api"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -52,7 +52,7 @@ func main() {
 	fmt.Printf(" %T", collection)
 	fmt.Printf(" %T", ctx)
 
-	// router.HandleFunc("/item", api.GetItem(client)).Methods(http.MethodGet)
+	router.HandleFunc("/item", api.CreateItem(collection)).Methods(http.MethodPost)
 	log.Fatal(http.ListenAndServe(":8080", router))
 
 }
