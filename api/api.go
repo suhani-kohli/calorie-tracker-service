@@ -15,6 +15,12 @@ type FoodLog struct {
 	MealName string `json:"mealName,omitempty" bson:"mealName,omitempty"`
 	FoodItem string `json:"foodItem,omitempty" bson:"foodItem,omitempty"`
 	Date     string `json:"date,omitempty" bson:"date,omitempty"`
+	Amount   string `json:"amount,omitempty" bson:"amount,omitempty"`
+	Size     string `json:"size,omitempty" bson:"size,omitempty"`
+	Protein  string `json:"protein,omitempty" bson:"protein,omitempty"`
+	Fat      string `json:"fat,omitempty" bson:"fat,omitempty"`
+	Carbs    string `json:"carbs,omitempty" bson:"carbs,omitempty"`
+	Calories int    `json:"Calories,omitempty" bson:"calories,omitempty"`
 }
 
 func CreateFoodLog(collection *mongo.Collection) http.HandlerFunc {
